@@ -4,9 +4,11 @@ interface DataItem {
   id: string;
   title: string;
   image: any;
+  description:string;
+  category:string;
 }
 
-export default async function Home() {
+export default async function MockApi() {
   const res = await fetch("https://677fb0050476123f76a7976e.mockapi.io/users");
   const data: DataItem[] = await res.json();
   console.log(data);
@@ -34,6 +36,9 @@ export default async function Home() {
               </div>
               <div>
                 <h1 className="font-semibold text-lg text-gray-800 text-center">{items.title}</h1>
+                <h2>{items.category}</h2>
+                <p>{items.description}</p>
+
                 </div>
             </div>
           );

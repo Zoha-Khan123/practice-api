@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
@@ -13,13 +13,14 @@ interface Product {
     };
   };
   id: number;
+  category:string
 }
 
 export default function FetchData() {
-    const [products, setProducts] = useState<Product[]>([]); // State to store products
+ const [products, setProducts] = useState<Product[]>([]); // State to store products
 
   // Fetch products from Sanity
-  async function fetchProducts() {
+   async function fetchProducts() {
     const query = `
       *[_type == "product"] {
         title,
@@ -29,7 +30,8 @@ export default function FetchData() {
             url
           }
         },
-        id
+        id,
+        
       }
     `;
 
@@ -37,27 +39,23 @@ export default function FetchData() {
     setProducts(products); // Set the fetched products to state
   }
 
-    // Fetch products when the component mounts
-    useEffect(() => {
-        fetchProducts();
-      }, []); // Empty dependency array means it will run only once after the first render
-    
+  // Fetch products when the component mounts
+  useEffect(() => {
+    fetchProducts();
+  }, []); // Empty dependency array means it will run only once after the first render
 
   return (
     <div>
-      <Link href={`/products`}>
-      {
-        products.map((item)=>{
-            return(
-                <div key={item.id}>
-                    <h1>{item.id}</h1>
-                    <h2>{item.title}</h2>
-                    <img src={urlFor(item.image).url()} alt={item.title} />
-                </div>
-            )
-        })
-      }
-      </Link>
+      {products.map((item) => (
+        <Link href={`../product/${item.id}`} key={item.id}>
+          <div>
+            <h1>{item.id}</h1>
+            <h2>{item.title}</h2>
+            <h2>{item.category}</h2>
+            <img src={urlFor(item.image).url()} alt={item.title} />
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
